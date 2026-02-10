@@ -5,15 +5,14 @@ import MovieRow from "../component/MovieRow";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-
-const BASE_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from "../config/api";
 
 export default function Home() {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/api/v1/movies/new-movies`)
+      .get(`${API_URL}/api/v1/movies/new-movies`)
       .then((res) => setMovies(res.data))
       .catch((err) => console.log(err));
   }, []);

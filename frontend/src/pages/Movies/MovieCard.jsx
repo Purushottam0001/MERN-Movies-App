@@ -2,18 +2,32 @@ import { Link } from "react-router-dom";
 
 const MovieCard = ({ movie }) => {
   return (
-    <div key={movie._id} className="relative group m-[2rem]">
+    <div className="relative group m-6 w-[200px] flex-shrink-0">
       <Link to={`/movies/${movie._id}`}>
         <img
-          src={movie.image}
+          src={movie.poster}
           alt={movie.name}
-          className="w-[20rem] h-[20rem] rounded m-0 p-0 transition duration-300 ease-in-out transform group-hover:opacity-50"
+          className="w-full h-[300px] object-cover rounded-lg
+                     transition duration-300 ease-in-out
+                     group-hover:scale-105"
+          onError={(e) => {
+            e.target.src =
+              "https://via.placeholder.com/300x450?text=Movie";
+          }}
         />
-      </Link>
 
-      <p className="absolute top-[85%] left-[2rem] right-0 bottom-0 opacity-0 transition duration-300 ease-in-out group-hover:opacity-100">
-        {movie.name}
-      </p>
+        <div className="absolute bottom-0 left-0 right-0 h-24
+                        bg-gradient-to-t from-black via-black/60 to-transparent
+                        opacity-0 group-hover:opacity-100
+                        transition duration-300 rounded-b-lg" />
+
+        <p className="absolute bottom-4 left-3 right-3
+                      text-white text-sm font-semibold
+                      opacity-0 group-hover:opacity-100
+                      transition duration-300">
+          {movie.name}
+        </p>
+      </Link>
     </div>
   );
 };

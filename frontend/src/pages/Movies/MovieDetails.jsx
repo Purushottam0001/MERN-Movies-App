@@ -12,8 +12,12 @@ const MovieDetails = () => {
   const { id: movieId } = useParams();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
-  const { data: movie, refetch } = useGetSpecificMovieQuery(movieId);
+
+  const { data: movie, refetch } =
+    useGetSpecificMovieQuery(movieId);
+
   const { userInfo } = useSelector((state) => state.auth);
+
   const [createReview, { isLoading: loadingMovieReview }] =
     useAddMovieReviewMutation();
 
@@ -28,7 +32,6 @@ const MovieDetails = () => {
       }).unwrap();
 
       refetch();
-
       toast.success("Review created successfully");
     } catch (error) {
       toast.error(error.data || error.message);
@@ -37,40 +40,50 @@ const MovieDetails = () => {
 
   return (
     <>
+      {/* BACK BUTTON */}
       <div>
         <Link
           to="/"
-          className="  text-white font-semibold hover:underline ml-[20rem]"
+          className="text-white font-semibold hover:underline ml-[20rem]"
         >
           Go Back
         </Link>
       </div>
 
       <div className="mt-[2rem]">
+        {/* MOVIE POSTER */}
         <div className="flex justify-center items-center">
           <img
-            src={movie?.image}
+            src={movie?.poster}
             alt={movie?.name}
             className="w-[70%] rounded"
+            onError={(e) => {
+              e.target.src =
+                "https://via.placeholder.com/800x500?text=Movie";
+            }}
           />
         </div>
-        {/* Container One */}
-        <div className="container  flex justify-between ml-[20rem] mt-[3rem]">
+
+        {/* MOVIE INFO */}
+        <div className="container flex justify-between ml-[20rem] mt-[3rem]">
           <section>
-            <h2 className="text-5xl my-4 font-extrabold">{movie?.name}</h2>
+            <h2 className="text-5xl my-4 font-extrabold">
+              {movie?.name}
+            </h2>
+
             <p className="my-4 xl:w-[35rem] lg:w-[35rem] md:w-[30rem] text-[#B0B0B0]">
-              {movie?.detail}
+              {movie?.plot}
             </p>
           </section>
 
           <div className="mr-[5rem]">
             <p className="text-2xl font-semibold">
-              Releasing Date: {movie?.year}
+              Release Year: {movie?.year}
             </p>
 
             <div>
-              {movie?.cast.map((c) => (
-                <ul key={c._id}>
+              {movie?.cast?.map((c, index) => (
+                <ul key={index}>
                   <li className="mt-[1rem]">{c}</li>
                 </ul>
               ))}
@@ -78,6 +91,7 @@ const MovieDetails = () => {
           </div>
         </div>
 
+        {/* REVIEWS */}
         <div className="container ml-[20rem]">
           <MovieTabs
             loadingMovieReview={loadingMovieReview}
