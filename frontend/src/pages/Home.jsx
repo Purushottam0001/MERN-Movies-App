@@ -1,13 +1,15 @@
+import Sidebar from "../component/Sidebar";
+import Navbar from "../component/Navbar";
 import HeroBanner from "../component/HeroBanner";
 import MovieRow from "../component/MovieRow";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const BASE_URL = "https://mern-movies-app-iw4r.onrender.com";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export default function Home() {
-  const [movies, setMovies] = useState(null);
+  const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     axios
@@ -17,15 +19,21 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="p-6 bg-black text-white min-h-screen">
+    <div className="flex bg-black text-white min-h-screen">
+      <Sidebar />
 
-      {/* Hero Banner */}
-      {movies && <HeroBanner movies={movies} />}
+      <div className="ml-64 w-full">
+        <Navbar />
 
-      {/* Movie Rows */}
-      <MovieRow title="New Movies" movies={movies} />
-      <MovieRow title="Top Movies" movies={movies} />
+        <div className="p-6">
+          {movies.length > 0 && (
+            <HeroBanner movie={movies[0]} />
+          )}
 
+          <MovieRow title="New Movies" movies={movies} />
+          <MovieRow title="Top Movies" movies={movies} />
+        </div>
+      </div>
     </div>
   );
 }
