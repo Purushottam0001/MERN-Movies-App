@@ -1,6 +1,7 @@
 // =======================
 // IMPORT PACKAGES
 // =======================
+import cors from "cors";
 import express from "express";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
@@ -18,10 +19,20 @@ import uploadRoutes from "./routes/uploadRoutes.js";
 // =======================
 // CONFIGURATION
 // =======================
-dotenv.config();        // Load .env variables
-connectDB();            // Connect MongoDB
+dotenv.config();
+connectDB();
 
 const app = express();
+
+// =======================
+// ✅ CORS MIDDLEWARE (ADD THIS BLOCK)
+// =======================
+app.use(
+  cors({
+    origin: "https://mern-movies-app-ten.vercel.app",
+    credentials: true,
+  })
+);
 
 // =======================
 // MIDDLEWARES
