@@ -1,8 +1,8 @@
 // =======================
 // IMPORT PACKAGES
 // =======================
-import cors from "cors";
 import express from "express";
+import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import path from "path";
@@ -25,11 +25,23 @@ connectDB();
 const app = express();
 
 // =======================
-// ✅ CORS MIDDLEWARE (ADD THIS BLOCK)
+// ✅ CORS CONFIGURATION
 // =======================
+// Allow both deployed frontend and local frontend
+const allowedOrigins = [
+  "https://mern-movies-app-ten.vercel.app",
+  "http://localhost:5173",
+];
+
 app.use(
   cors({
-    origin: "https://mern-movies-app-ten.vercel.app",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
