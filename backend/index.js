@@ -25,23 +25,14 @@ connectDB();
 const app = express();
 
 // =======================
-// ✅ CORS CONFIGURATION
+// ✅ CORS (VERY IMPORTANT - BEFORE ROUTES)
 // =======================
-// Allow both deployed frontend and local frontend
-const allowedOrigins = [
-  "https://mern-movies-app-ten.vercel.app",
-  "http://localhost:5173",
-];
-
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: [
+      "https://mern-movies-app-ten.vercel.app",
+      "http://localhost:5173",
+    ],
     credentials: true,
   })
 );
@@ -52,11 +43,6 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
-// =======================
-// PORT CONFIGURATION
-// =======================
-const PORT = process.env.PORT || 3000;
 
 // =======================
 // ROUTES
@@ -75,6 +61,8 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // =======================
 // SERVER START
 // =======================
+const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
