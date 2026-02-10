@@ -1,18 +1,22 @@
 import { Outlet } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Navigation from "./pages/Auth/Navigation";
+import Navbar from "./component/Navbar";
+import Sidebar from "./component/Sidebar";
 
-const App = () => {
+function App() {
   return (
-    <>
-      <ToastContainer />
-      <Navigation />
-      <main className="py-3">
+    <div className="flex bg-black text-white min-h-screen">
+      
+      {/* Sidebar */}
+      <Sidebar />
+
+      {/* Main Content */}
+      <div className="ml-64 w-full">
+        <Navbar />
         <Outlet />
-      </main>
-    </>
+      </div>
+
+    </div>
   );
-};
+}
 
 export default App;

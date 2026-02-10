@@ -25,14 +25,22 @@ connectDB();
 const app = express();
 
 // =======================
-// ✅ CORS (VERY IMPORTANT - BEFORE ROUTES)
+// ✅ CORS CONFIGURATION
 // =======================
+const allowedOrigins = [
+  "https://mern-movies-app-ten.vercel.app",
+  "http://localhost:5173",
+];
+
 app.use(
   cors({
-    origin: [
-      "https://mern-movies-app-ten.vercel.app",
-      "http://localhost:5173",
-    ],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
@@ -43,6 +51,13 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// =======================
+// ROOT ROUTE (Fix Cannot GET /)
+// =======================
+app.get("/", (req, res) => {
+  res.send("🚀 MERN Movies API is running...");
+});
 
 // =======================
 // ROUTES
@@ -59,10 +74,13 @@ const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // =======================
-// SERVER START
+// PORT CONFIGURATION
 // =======================
 const PORT = process.env.PORT || 3000;
 
+// =======================
+// SERVER START
+// =======================
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
