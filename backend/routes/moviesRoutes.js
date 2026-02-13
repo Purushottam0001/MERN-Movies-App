@@ -1,5 +1,5 @@
 import express from "express";
-import Movie from "../models/movieModel.js";
+import Movie from "../models/Movie.js";
 
 const router = express.Router();
 
